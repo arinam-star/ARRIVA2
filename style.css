@@ -1,0 +1,222 @@
+/* Подключаем шрифт */
+@import url('https://fonts.googleapis.com/css2?family=Dela+Gothic+One&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Dela Gothic One", sans-serif;
+}
+
+body {
+    background: #e7d3d3;
+    color: #222;
+}
+
+/* ===== ШАПКА ===== */
+header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: #f3b7c6;
+    padding: 20px 40px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.logo {
+    font-size: 28px;
+    font-weight: 900;
+    color: #682a3c;
+    letter-spacing: 5px;
+}
+
+/* ===== ОСНОВНАЯ ОБЛАСТЬ ===== */
+main {
+    padding: 30px 40px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.section-title {
+    color: #8a7575;
+    font-size: 24px;
+    margin-bottom: 25px;
+    font-weight: 700;
+}
+
+/* ===== СЕТКА ===== */
+.grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+.card-wrap {
+    width: calc(25% - 20px);
+    min-width: 240px;
+    position: relative;
+}
+
+.card {
+    display: block;
+    border-radius: 16px;
+    overflow: hidden;
+    background: #f8f7f7;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(255, 165, 165, 0.793);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 251, 255, 0.438);
+}
+
+.card img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Прячем чекбоксы */
+.open-checkbox {
+    display: none;
+}
+
+/* ===== МОДАЛЬНОЕ ОКНО ===== */
+.detail {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    z-index: 200;
+    padding: 20px;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ВОТ ТУТ МАГИЯ: привязываем каждый чекбокс к его окну */
+#open1:checked ~ .detail-1,
+#open2:checked ~ .detail-2,
+#open3:checked ~ .detail-3,
+#open4:checked ~ .detail-4,
+#open5:checked ~ .detail-5,
+#open6:checked ~ .detail-6,
+#open7:checked ~ .detail-7,
+#open8:checked ~ .detail-8,
+#open9:checked ~ .detail-9,
+#open10:checked ~ .detail-10,
+#open11:checked ~ .detail-11,
+#open12:checked ~ .detail-12,
+#open13:checked ~ .detail-13,
+#open14:checked ~ .detail-14,
+#open15:checked ~ .detail-15,
+#open16:checked ~ .detail-16,
+#open17:checked ~ .detail-17,
+#open18:checked ~ .detail-18,
+#open19:checked ~ .detail-19,
+#open20:checked ~ .detail-20,
+#open21:checked ~ .detail-21,
+#open22:checked ~ .detail-22 {
+    display: flex;
+}
+
+.detail-box {
+    background: #dfbdc7dc;
+    border-radius: 20px;
+    max-width: 900px;
+    width: 100%;
+    max-height: 90vh;
+    overflow: hidden; 
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+@media (min-width: 700px) {
+    .detail-box {
+        flex-direction: row;
+    }
+}
+
+.detail-box img {
+    width: 100%;
+    max-height: 60vh;
+    object-fit: contain;
+    background: #f0f0f0;
+}
+
+@media (min-width: 700px) {
+    .detail-box img {
+        width: 55%;
+        max-height: 90vh;
+        border-radius: 20px 0 0 20px;
+    }
+}
+
+.detail-info {
+    padding: 30px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow-y: auto;
+}
+
+.detail-info h2 {
+    color: #616161d5;
+    font-size: 26px;
+    margin-bottom: 15px;
+}
+
+.detail-info p {
+    color: #000000;
+    line-height: 1.6;
+    font-size: 16px;
+}
+
+.detail-close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #96516bc4;
+    color: #2b0114;
+    font-size: 18px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 2px 10px rgba(7, 7, 7, 0.308);
+    z-index: 10;
+    transition: background 0.2s;
+}
+
+.detail-close:hover {
+    background: #79203bdc;
+}
+
+/* ===== КНОПКА ПЛЕЕРА ===== */
+.play-btn {
+    background: #96516bc4;
+    color: #fff;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 30px;
+    font-size: 16px;
+    font-family: "Dela Gothic One", sans-serif;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+    margin-top: 10px;
+    width: fit-content;
+}
+
+.play-btn:hover {
+    background: #79203bdc;
+    transform: scale(1.05);
+}
+

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>АРРИВА — Вход</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Стили только для страницы входа */
+        .auth-container {
+            max-width: 400px;
+            margin: 100px auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        .auth-container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #682a3c;
+        }
+        .auth-input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 2px solid #f3b7c6;
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+        .auth-btn {
+            width: 100%;
+            padding: 12px;
+            background: #682a3c;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .auth-btn:hover { background: #f563bd; }
+        .auth-link {
+            display: block;
+            text-align: center;
+            margin-top: 15px;
+            color: #f563bd;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        .error-msg {
+            color: red;
+            text-align: center;
+            font-size: 13px;
+            margin-bottom: 10px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">ARRIVA</div>
+    </header>
+
+    <div class="auth-container">
+        <h2>Вход в аккаунт</h2>
+        <div id="error" class="error-msg"></div>
+        
+        <input type="text" id="login-username" class="auth-input" placeholder="Ваш логин">
+        <input type="password" id="login-password" class="auth-input" placeholder="Ваш пароль">
+        <button class="auth-btn" onclick="login()">Войти</button>
+
+        <a href="#" class="auth-link" onclick="toggleView()">Нет аккаунта? Зарегистрироваться</a>
+    </div>
+
+    <!-- Блок регистрации (скрыт по умолчанию) -->
+    <div class="auth-container" id="register-box" style="display: none;">
+        <h2>Регистрация</h2>
+        <div id="reg-error" class="error-msg"></div>
+
+        <input type="text" id="reg-username" class="auth-input" placeholder="Придумайте логин">
+        <input type="password" id="reg-password" class="auth-input" placeholder="Придумайте пароль">
+        <button class="auth-btn" onclick="register()">Создать аккаунт</button>
+
+        <a href="#" class="auth-link" onclick="toggleView()">Уже есть аккаунт? Войти</a>
+    </div>
+
+    <script>
+        // ====== ЛОГИКА РЕГИСТРАЦИИ И ВХОДА ======
+
+        // Получаем список всех пользователей из localStorage (или пустой массив, если там ничего нет)
+        function getUsers() {
+            return JSON.parse(localStorage.getItem('arriva_users')) || [];
+        }
+
+        // Сохраняем обновленный список пользователей
+        function saveUsers(users) {
+            localStorage.setItem('arriva_users', JSON.stringify(users));
+        }
+
+        // Переключение между окном Входа и Регистрации
+        function toggleView() {
+            const loginBox = document.querySelector('.auth-container');
+            const regBox = document.getElementById('register-box');
+            
+            if (loginBox.style.display === 'none') {
+                loginBox.style.display = 'block';
+                regBox.style.display = 'none';
+            } else {
+                loginBox.style.display = 'none';
+                regBox.style.display = 'block';
+            }
+        }
+
+        // Функция РЕГИСТРАЦИИ
+        function register() {
+            const username = document.getElementById('reg-username').value.trim();
+            const password = document.getElementById('reg-password').value;
+            const errorBox = document.getElementById('reg-error');
+
+            if (!username || !password) {
+                errorBox.textContent = "Заполните все поля!";
+                errorBox.style.display = 'block';
+                return;
+            }
+
+            const users = getUsers();
+
+            // Проверка на уникальность логина
+            const userExists = users.find(u => u.username.toLowerCase() === username.toLowerCase());
+            if (userExists) {
+                errorBox.textContent = "Этот логин уже занят!";
+                errorBox.style.display = 'block';
+                return;
+            }   
+
+            // Добавляем нового пользователя
+            // Первый зарегистрированный пользователь автоматически становится админом
+            const isFirstUser = users.length === 0;
+            users.push({ 
+                username: username, 
+                password: password,
+                isAdmin: isFirstUser 
+            });
+            saveUsers(users);
+
+            // Автоматически логиним пользователя после регистрации
+            localStorage.setItem('arriva_currentUser', username);
+            alert("Вы успешно зарегистрированы!");
+            window.location.href = "index.html";
+        }
+
+        // Функция ВХОДА
+        function login() {
+            const username = document.getElementById('login-username').value.trim();
+            const password = document.getElementById('login-password').value;
+            const errorBox = document.getElementById('error');
+
+            const users = getUsers();
+            const user = users.find(u => u.username.toLowerCase() === username.toLowerCase() && u.password === password);
+
+            if (user) {
+                localStorage.setItem('arriva_currentUser', user.username);
+                window.location.href = "index.html";
+            } else {
+                errorBox.textContent = "Неверный логин или пароль.";
+                errorBox.style.display = 'block';
+            }
+        }
+    </script>
+</body>
+</html>
